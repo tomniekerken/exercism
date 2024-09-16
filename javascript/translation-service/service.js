@@ -26,8 +26,21 @@ export class TranslationService {
    * @param {string} text
    * @returns {Promise<string>}
    */
-  free(text) {
-    throw new Error('Implement the free function');
+  async free(text) {
+    /* try {
+      // Returns the translation string on success
+      return (await this.api.fetch(text)).translation;
+    } catch (error) {
+      // Rethrows any errors to the consumer
+      throw error;
+    } */
+
+    return this.api
+      .fetch(text)
+      .then((res) => res.translation)
+      .catch((error) => {
+        throw error;
+      });
   }
 
   /**
@@ -41,7 +54,13 @@ export class TranslationService {
    * @returns {Promise<string[]>}
    */
   batch(texts) {
-    throw new Error('Implement the batch function');
+    if (texts.length === 0) {
+      return Promise.reject(new BatchIsEmpty());
+    }
+
+    const promises = texts.map((text) => this.free(text));
+
+    return Promise.all(promises);
   }
 
   /**
@@ -54,7 +73,35 @@ export class TranslationService {
    * @returns {Promise<void>}
    */
   request(text) {
-    throw new Error('Implement the request function');
+    return new Promise((resolve, reject) => {
+      // recursion
+      const requestApi = (attempt = 1, maxRetries = 3) => {
+        this.api.request(text, (err) => {
+          if (!err) {
+            resolve(undefined);
+          } else if (attempt === maxRetries) {
+            reject(err);
+          } else {
+            requestApi(attempt + 1);
+          }
+        });
+      };
+
+      requestApi();
+
+      // simple alternative, not DRY
+      /* this.api.request(text, (err) =>
+        !err
+          ? resolve(undefined)
+          : this.api.request(text, (err) =>
+              !err
+                ? resolve(undefined)
+                : this.api.request(text, (err) =>
+                    !err ? resolve(undefined) : reject(err)
+                  )
+            )
+      ); */
+    });
   }
 
   /**
@@ -68,7 +115,7 @@ export class TranslationService {
    * @returns {Promise<string>}
    */
   premium(text, minimumQuality) {
-    throw new Error('Implement the premium function');
+    throw new Error("Implement the premium function");
   }
 }
 
@@ -84,7 +131,7 @@ export class QualityThresholdNotMet extends Error {
     super(
       `
 The translation of ${text} does not meet the requested quality threshold.
-    `.trim(),
+    `.trim()
     );
 
     this.text = text;
@@ -100,7 +147,7 @@ export class BatchIsEmpty extends Error {
     super(
       `
 Requested a batch translation, but there are no texts in the batch.
-    `.trim(),
+    `.trim()
     );
   }
 }
