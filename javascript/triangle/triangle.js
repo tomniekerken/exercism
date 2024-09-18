@@ -5,18 +5,50 @@
 
 export class Triangle {
   constructor(...sides) {
-    throw new Error('Remove this statement and implement this function');
+    [this.a, this.b, this.c] = sides;
+  }
+
+  get isValidTriangle() {
+    if (
+      this.a + this.b < this.c ||
+      this.b + this.c < this.a ||
+      this.a + this.c < this.b
+    ) {
+      return false;
+    }
+
+    if (this.a <= 0 || this.b <= 0 || this.c <= 0) {
+      return false;
+    }
+
+    if (!this.a || !this.b || !this.c) {
+      return false;
+    }
+
+    return true;
   }
 
   get isEquilateral() {
-    throw new Error('Remove this statement and implement this function');
+    if (!this.isValidTriangle) {
+      return false;
+    }
+
+    return this.a === this.b && this.a === this.c && this.b === this.c;
   }
 
   get isIsosceles() {
-    throw new Error('Remove this statement and implement this function');
+    if (!this.isValidTriangle) {
+      return false;
+    }
+
+    return this.a === this.b || this.b === this.c || this.c === this.a;
   }
 
   get isScalene() {
-    throw new Error('Remove this statement and implement this function');
+    if (!this.isValidTriangle) {
+      return false;
+    }
+
+    return this.a !== this.b && this.a !== this.c && this.b !== this.c;
   }
 }
