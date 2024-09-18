@@ -32,11 +32,17 @@ function parseHeader(markdown, isList) {
   for (let i = 0; i < markdown.length; i++) {
     if (markdown[i] === "#") {
       headingCount += 1;
+    } else {
+      break;
     }
   }
 
-  if (headingCount === 0 || headingCount > 6) {
+  if (headingCount === 0) {
     return null;
+  }
+
+  if (headingCount > 6) {
+    return parseParagraph(markdown, isList);
   }
 
   const headerTag = `h${headingCount}`;
@@ -102,5 +108,5 @@ export function parse(markdown) {
     isList = isNewList;
   });
 
-  return html;
+  return isList ? `${html}</ul>` : html;
 }
