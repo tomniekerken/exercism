@@ -3,6 +3,13 @@
 // convenience to get you started writing code faster.
 //
 
-export const isLeap = () => {
-  throw new Error("Remove this statement and implement this function");
+const isEvenlyDivisable = (n) => {
+  return n - Math.floor(n) === 0;
+};
+
+export const isLeap = (year) => {
+  return (
+    isEvenlyDivisable(year / 4) &&
+    (!isEvenlyDivisable(year / 100) || isEvenlyDivisable(year / 400))
+  );
 };
