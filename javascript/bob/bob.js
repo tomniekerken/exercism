@@ -3,6 +3,55 @@
 // convenience to get you started writing code faster.
 //
 
+function hasLetters(message) {
+  const lettersRegex = new RegExp(/[a-zA-Z]/);
+
+  return lettersRegex.test(message);
+}
+
+function endsWithQuestionmark(message) {
+  const characters = message.trim().split("");
+
+  if (characters[characters.length - 1] === "?") {
+    return true;
+  }
+
+  return false;
+}
+
+function hasOnlyCapitalLetters(message) {
+  const messageCapitalized = message.trim().toUpperCase();
+
+  if (message === messageCapitalized) {
+    return true;
+  }
+
+  return false;
+}
+
 export const hey = (message) => {
-  throw new Error('Remove this statement and implement this function');
+  if (message == 0 || message.length === 0) {
+    return "Fine. Be that way!";
+  }
+
+  if (!hasLetters(message)) {
+    if (endsWithQuestionmark(message)) {
+      return "Sure.";
+    } else {
+      return "Whatever.";
+    }
+  }
+
+  if (endsWithQuestionmark(message)) {
+    if (hasOnlyCapitalLetters(message)) {
+      return "Calm down, I know what I'm doing!";
+    }
+    return "Sure.";
+  }
+
+  if (hasOnlyCapitalLetters(message)) {
+    return "Whoa, chill out!";
+  }
+
+  return "Whatever.";
 };
