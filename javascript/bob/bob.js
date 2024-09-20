@@ -10,9 +10,7 @@ function hasLetters(message) {
 }
 
 function endsWithQuestionmark(message) {
-  const characters = message.trim().split("");
-
-  if (characters[characters.length - 1] === "?") {
+  if (message.trim().endsWith("?")) {
     return true;
   }
 
