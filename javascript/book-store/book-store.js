@@ -31,7 +31,7 @@ const getKeyWithLength = (obj, length) => {
   return hasLength;
 };
 
-export const cost = (books) => {
+const cost = (books) => {
   let price = 0;
   const bookCost = 800;
 
@@ -144,3 +144,4 @@ export const cost = (books) => {
 console.log("Expected: 8120", cost([1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3]));
 
 console.log("Expected: 7520", cost([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2])); */
+console.log(cost([1, 1, 2, 3, 4, 4, 5, 5]));
